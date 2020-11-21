@@ -3,7 +3,7 @@ classdef elasticSpectrum < handle
     
     properties(SetAccess = private)        
         type    = 'Type 1'
-        soil    = 'C'
+        soil    = 'D'
         ag      = 0.3*9.81
         S
         Tb
@@ -65,6 +65,9 @@ classdef elasticSpectrum < handle
         function set.period(obj,data)
             obj.period=data;
         end        
+        function set.ag(obj,data)
+            obj.ag=data;
+        end      
         function m=get.Sda(obj) 
             index=find(obj.time>=obj.period,1);
             m=obj.pseudoAcc(index);            
