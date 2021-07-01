@@ -4,14 +4,14 @@ classdef designSpectrum < handle
     properties(SetAccess = private)        
         type    = 'Type 1'
         soil    = 'C'
-        ag      = 0.25*9.81
-        behaviourFactor=2;
         S
         Tb
         Tc
         Td
     end
     properties
+        ag      = 0.25*9.81
+        behaviourFactor = 2
         Sda  
         time
         pseudoAcc       
@@ -63,10 +63,17 @@ classdef designSpectrum < handle
         
         function set.period(obj,data)
             obj.period=data;
-        end        
-        function m=get.Sda(obj) 
+        end
+        function m=get.Sda(obj)
             index=find(obj.time>=obj.period,1);
-            m=obj.pseudoAcc(index);            
+            m=obj.pseudoAcc(index);
+        end
+        
+        function set.ag(obj,data)
+            obj.ag=data;
+        end
+        function set.behaviourFactor(obj,data)
+            obj.behaviourFactor=data;
         end
         
         function m=get.pseudoAcc(obj) 
