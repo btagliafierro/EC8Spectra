@@ -2,21 +2,25 @@ classdef designSpectrum < handle
 
     
     properties(SetAccess = private)        
-        type    = 'Type 1'
-        soil    = 'C'
+
         S
         Tb
         Tc
         Td
+        
     end
     properties
-        ag      = 0.25*9.81
-        behaviourFactor = 2
         Sda  
         time
         pseudoAcc       
         lambda
         period
+        multiplier=1.00
+        ag = 0.25*9.81   %%% ag * g * IF
+        importanceFactor=1.00   
+        behaviourFactor=1.0
+        type    = 'Type 1'
+        soil    = 'B'
     end
     
     methods
@@ -59,34 +63,43 @@ classdef designSpectrum < handle
             obj.Tc=Tc;
             obj.Td=Td;
         end
-                
         
+        function set.type(obj,data)
+            obj.type=data;
+        end
+        function set.soil(obj,data)
+            obj.soil=data;
+        end
         function set.period(obj,data)
             obj.period=data;
         end
-        function m=get.Sda(obj)
-            index=find(obj.time>=obj.period,1);
-            m=obj.pseudoAcc(index);
-        end
-        
+        function set.multiplier(obj,data)
+            obj.multiplier=data;
+        end  
         function set.ag(obj,data)
             obj.ag=data;
         end
-        function set.behaviourFactor(obj,data)
-            obj.behaviourFactor=data;
+        function set.importanceFactor(obj,data)
+            obj.importanceFactor=data;
+        end 
+        
+        function m=get.Sda(obj) 
+            index=find(obj.time>=obj.period,1);
+            m=obj.pseudoAcc(index);            
         end
         
         function m=get.pseudoAcc(obj) 
             dt=0.001;
-            beta=0.2;
+            beta=0.2;            
+            acceleration=obj.ag*obj.importanceFactor*obj.multiplier;
             q=obj.behaviourFactor;
-            T1=@(T) obj.ag*obj.S*(2/3+T/obj.Tb*(2.5/q-2/3));
-            T2=@(T) obj.ag*obj.S*2.5/q+T*0;
-            T3=@(T) max(obj.ag*obj.S*2.5*(obj.Tc./T)/q,beta*obj.ag);
-            T4=@(T) max(obj.ag*obj.S*2.5*(obj.Tc*obj.Td./T.^2)/q,beta*obj.ag);
+            T1=@(T) acceleration*obj.S*(2/3+T/obj.Tb*(2.5/q-2/3));
+            T2=@(T) acceleration*obj.S*2.5/q+T*0;
+            T3=@(T) max(acceleration*obj.S*2.5*(obj.Tc./T)/q , beta*acceleration);
+            T4=@(T) max(acceleration*obj.S*2.5*(obj.Tc*obj.Td./T.^2)/q , beta*acceleration);
             n=10;n1=1;
             EC8=[T1(dt/n1:dt/n1:obj.Tb) T2(obj.Tb+dt/n1:dt/n1:obj.Tc) T3(obj.Tc+dt*n/2:dt*n/2:obj.Td) T4(obj.Td+dt*n:dt*n:10)];
-            m=EC8;
+            m=obj.multiplier*EC8;
         end
         function m=get.time(obj)   
             dt=0.001;
@@ -94,6 +107,7 @@ classdef designSpectrum < handle
             T=[(dt:dt/n1:obj.Tb) (obj.Tb+dt/n1:dt/n1:obj.Tc) (obj.Tc+dt*n/2:dt*n/2:obj.Td) (obj.Td+dt*n:dt*n:10)];
             m=T;
         end
+
         
     end
 end
