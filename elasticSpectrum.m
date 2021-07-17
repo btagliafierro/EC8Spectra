@@ -1,16 +1,15 @@
 classdef elasticSpectrum < handle
-    
-    
-    properties(SetAccess = private)        
-        type    = 'Type 1'
-        soil    = 'D'
-        ag      = 0.3*9.81
+        
+    properties(SetAccess = private)     
         S
         Tb
         Tc
         Td
     end
     properties
+        type    = 'Type 1'
+        soil    = 'D'
+        ag      = 0.3*9.81
         damping = 0.05
         Sda  
         time
