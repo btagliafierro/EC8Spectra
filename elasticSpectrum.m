@@ -58,8 +58,14 @@ classdef elasticSpectrum < handle
             obj.Td=Td;
         end
         
-        function set.damping(obj,damp)             
-            obj.damping=damp;            
+        function set.damping(obj,temp)             
+            obj.damping=temp;            
+        end
+        function set.type(obj,temp)             
+            obj.type=temp;            
+        end
+        function set.soil(obj,temp)             
+            obj.soil=temp;            
         end
         function set.period(obj,data)
             obj.period=data;
