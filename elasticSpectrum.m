@@ -8,7 +8,7 @@ classdef elasticSpectrum < handle
     end
     properties
         type    = 'Type 1'
-        soil    = 'D'
+        soil    = 'B'
         ag      = 0.3*9.81
         damping = 0.05
         Sda  
