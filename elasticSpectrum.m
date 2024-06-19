@@ -7,10 +7,10 @@ classdef elasticSpectrum < handle
         Td
     end
     properties
-        type    = 'Type 1'
-        soil    = 'B'
-        ag      = 0.3*9.81
-        damping = 0.05
+        type
+        soil    
+        ag      
+        damping
         Sda  
         time
         pseudoAcc       
@@ -27,7 +27,7 @@ classdef elasticSpectrum < handle
                 obj.type=type;
             end
             soil=obj.soil;
-            if strcmpi(obj.type,'Type 1')
+            if strcmpi(obj.type,'Type_1')
                 if strcmp(soil,'A')
                     S=1.00; Tb=0.15; Tc=0.4; Td=2.;
                 elseif strcmp(soil,'B')
@@ -39,7 +39,7 @@ classdef elasticSpectrum < handle
                 elseif strcmp(soil,'E')
                     S=1.4; Tb=0.15; Tc=0.5; Td=2.;
                 end
-            elseif strcmpi(obj.type,'Type 2')
+            elseif strcmpi(obj.type,'Type_2')
                 if strcmp(soil,'A')
                     S=1.00; Tb=0.05; Tc=0.25; Td=1.2;
                 elseif strcmp(soil,'B')
@@ -94,7 +94,7 @@ classdef elasticSpectrum < handle
         function m=get.time(obj)   
             dt=0.001;
             n=10;n1=1;
-            T=[(dt:dt/n1:obj.Tb) (obj.Tb+dt/n1:dt/n1:obj.Tc) (obj.Tc+dt*n/2:dt*n/2:obj.Td) (obj.Td+dt*n:dt*n:10)];
+            T=[(dt/n1:dt/n1:obj.Tb) (obj.Tb+dt/n1:dt/n1:obj.Tc) (obj.Tc+dt*n/2:dt*n/2:obj.Td) (obj.Td+dt*n:dt*n:10)];
             m=T;
         end
         
